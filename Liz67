@@ -104,44 +104,79 @@ local function showBottomMessage(text)
     if not NotificationsEnabled then return end
 end
 
+-- Carga de WindUI con cachÃ© protegida y dos fuentes de respaldo.
 local WindUI
 local _version = "1.6.66"
 local uiFileName = "WindUI_Cache_v" .. _version .. ".txt"
 local timeFileName = "WindUI_Cache_v" .. _version .. "_Time.txt"
 
-local ok, result = pcall(function()
-    local cacheValido = false
-    if isfile and isfile(timeFileName) and readfile then
-        local savedTime = tonumber(readfile(timeFileName))
-        if savedTime and (os.time() - savedTime) < 86400 then
-            cacheValido = true
-        end
+local function ejecutarWindUI(source)
+    local compile, compileError = loadstring(source)
+    if not compile then
+        error(compileError or "No se pudo compilar WindUI")
     end
-    if cacheValido and isfile and isfile(uiFileName) then
-        local code = readfile(uiFileName)
-        local fn = loadstring(code)
-        if fn then
-            return fn()
-        else
-            if delfile then
-                pcall(delfile, uiFileName)
-                pcall(delfile, timeFileName)
-            end
-        end
-    end
-    local codigoUi = game:HttpGet("https://github.com/Footagesus/WindUI/releases/download/" .. _version .. "/main.lua")
-    if writefile then
-        writefile(uiFileName, codigoUi)
-        writefile(timeFileName, tostring(os.time()))
-    end
-    return loadstring(codigoUi)()
-end)
 
-if ok and result and type(result) == "table" then
-    WindUI = result
-else
-    warn("Error al cargar WindUI: " .. tostring(result))
-    return
+    local result = compile()
+    if type(result) ~= "table" then
+        error("WindUI no devolviÃ³ una tabla vÃ¡lida")
+    end
+    return result
+end
+
+-- La cachÃ© se prueba por separado: si estÃ¡ daÃ±ada, se continÃºa con la descarga.
+if isfile and readfile then
+    local cacheOK, cached = pcall(function()
+        if not (isfile(uiFileName) and isfile(timeFileName)) then
+            return nil
+        end
+
+        local savedTime = tonumber(readfile(timeFileName))
+        if not savedTime or (os.time() - savedTime) >= 86400 then
+            return nil
+        end
+
+        return ejecutarWindUI(readfile(uiFileName))
+    end)
+
+    if cacheOK and type(cached) == "table" then
+        WindUI = cached
+    elseif delfile then
+        pcall(delfile, uiFileName)
+        pcall(delfile, timeFileName)
+    end
+end
+
+if not WindUI then
+    local urls = {
+        "https://github.com/Footagesus/WindUI/releases/download/" .. _version .. "/main.lua",
+        "https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"
+    }
+
+    local lastError = "No se pudo descargar WindUI"
+    for _, url in ipairs(urls) do
+        local downloadOK, result = pcall(function()
+            local source = game:HttpGet(url)
+            local library = ejecutarWindUI(source)
+
+            if writefile then
+                pcall(writefile, uiFileName, source)
+                pcall(writefile, timeFileName, tostring(os.time()))
+            end
+
+            return library
+        end)
+
+        if downloadOK and type(result) == "table" then
+            WindUI = result
+            break
+        end
+        lastError = tostring(result)
+    end
+
+    if not WindUI then
+        warn("[LIZ67] Error al cargar WindUI: " .. lastError)
+        return
+    end
 end
 
 local Window = WindUI:CreateWindow({
@@ -152,12 +187,15 @@ local Window = WindUI:CreateWindow({
     Transparent = false,
     NewElements = true,
     HideSearchBar = false,
+
+    -- Usa un fondo que ya aparece en la lista de fondos del propio archivo.
     Background = "rbxthumb://type=Asset&id=73001572792344&w=420&h=420",
-    BackgroundImageTransparency = 0.2,
+    BackgroundImageTransparency = 0.05,
+
     OpenButton = {
         Title = "LIZ67",
         Icon = "rbxthumb://type=Asset&id=118232139384203&w=420&h=420",
-        IconSize = 9,
+        IconSize = 36,
         CornerRadius = UDim.new(1),
         StrokeThickness = 2,
         Enabled = true,
@@ -3096,7 +3134,7 @@ Tabs.Music:Button({
 
 local Backgrounds = {
     -- Fondos originales: se conservan sin cambios.
-    { Name = "Fondo 1", ID = "12687580616", Reference = "rbxthumb://type=Asset&id=12687580616&w=420&h=420" },
+    { Name = "Fondo 1", ID = "12687580616", Reference = "rbxthumb://type=Asset&id=73001572792344&w=420&h=420" },
     { Name = "Fondo 2", ID = "17104722", Reference = "rbxthumb://type=Asset&id=17104722&w=420&h=420" },
     { Name = "Fondo 3", ID = "1941010929", Reference = "rbxthumb://type=Asset&id=1941010929&w=420&h=420" },
     { Name = "Fondo 4", ID = "134245569", Reference = "rbxthumb://type=Asset&id=134245569&w=420&h=420" },
