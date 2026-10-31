@@ -189,8 +189,8 @@ local Window = WindUI:CreateWindow({
     HideSearchBar = false,
 
     -- Usa un fondo que ya aparece en la lista de fondos del propio archivo.
-    Background = "rbxthumb://type=Asset&id=73001572792344&w=420&h=420",
-    BackgroundImageTransparency = 0.05,
+    Background = "rbxassetid://73001572792344",
+    BackgroundImageTransparency = 0,
 
     OpenButton = {
         Title = "LIZ67",
@@ -3133,8 +3133,10 @@ Tabs.Music:Button({
 })
 
 local Backgrounds = {
+    -- Imagen del usuario: tambiÃ©n se incluye para que FindBackground pueda reconocerla.
+    { Name = "Mi imagen", ID = "73001572792344", Reference = "rbxassetid://73001572792344" },
     -- Fondos originales: se conservan sin cambios.
-    { Name = "Fondo 1", ID = "12687580616", Reference = "rbxthumb://type=Asset&id=73001572792344&w=420&h=420" },
+    { Name = "Fondo 1", ID = "12687580616", Reference = "rbxthumb://type=Asset&id=12687580616&w=420&h=420" },
     { Name = "Fondo 2", ID = "17104722", Reference = "rbxthumb://type=Asset&id=17104722&w=420&h=420" },
     { Name = "Fondo 3", ID = "1941010929", Reference = "rbxthumb://type=Asset&id=1941010929&w=420&h=420" },
     { Name = "Fondo 4", ID = "134245569", Reference = "rbxthumb://type=Asset&id=134245569&w=420&h=420" },
@@ -3241,6 +3243,12 @@ local function FindBackground()
 end
 
 local function FixBackgroundLayer(Background)
+    -- Mantiene la imagen centrada y mÃ¡s pequeÃ±a, sin estirarla.
+    Background.AnchorPoint = Vector2.new(0.5, 0.5)
+    Background.Position = UDim2.fromScale(0.5, 0.5)
+    Background.Size = UDim2.fromScale(0.78, 0.78)
+    Background.ScaleType = Enum.ScaleType.Fit
+    Background.BackgroundTransparency = 1
     Background.ZIndex = 0
     Background.Active = false
     local Parent = Background.Parent
