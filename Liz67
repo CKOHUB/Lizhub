@@ -13,6 +13,11 @@ local PlayerGui = Player:WaitForChild("PlayerGui")
 local player = Player
 local getgenv = getgenv or function() return _G end
 
+-- FONDO DEL MENU (sube tu foto a Roblox y pon el ID aqui)
+-- Ejemplo: "rbxassetid://1234567890"
+local BACKGROUND_IMAGE = "rbxassetid://128015505589345"
+local BACKGROUND_TRANSPARENCY = 0.25
+
 local isEnemy, estaEnLobby, IsInMatchStrict
 local esEnemigoValido, esCuchillo, esPistola, obtenerPistola
 local startTargetMonitor, stopTargetMonitor
@@ -1674,8 +1679,8 @@ local function LoadHub()
     local uiScale = make("UIScale", {Scale = baseScale}, MainFrame)
 
     local Backdrop = make("ImageLabel", {
-        Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Image = "rbxassetid://120887660443421",
-        ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.35, ImageColor3 = Color3.fromRGB(150, 170, 225), ZIndex = 0,
+        Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Image = BACKGROUND_IMAGE,
+        ScaleType = Enum.ScaleType.Crop, ImageTransparency = BACKGROUND_TRANSPARENCY, ImageColor3 = Color3.fromRGB(255, 255, 255), ZIndex = 0,
     }, MainFrame)
     corner(Backdrop, 6)
 
