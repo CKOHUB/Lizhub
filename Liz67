@@ -15,8 +15,8 @@ local getgenv = getgenv or function() return _G end
 
 -- FONDO DEL MENU (sube tu foto a Roblox y pon el ID aqui)
 -- Ejemplo: "rbxassetid://1234567890"
-local BACKGROUND_IMAGE = "rbxassetid://109756001841654"
-local BACKGROUND_TRANSPARENCY = 0.15
+local BACKGROUND_IMAGE = "rbxthumb://type=Asset&id=109756001841654&w=420&h=420"
+local BACKGROUND_TRANSPARENCY = 0
 
 local isEnemy, estaEnLobby, IsInMatchStrict
 local esEnemigoValido, esCuchillo, esPistola, obtenerPistola
@@ -1671,7 +1671,7 @@ local function LoadHub()
 
     local MainFrame = make("Frame", {
         Name = "MainFrame", Size = UDim2.new(0, 600, 0, 410), AnchorPoint = Vector2.new(0.5, 0.5),
-        Position = UDim2.new(0.5, 0, 0.5, 18), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 0.35, BorderSizePixel = 0,
+        Position = UDim2.new(0.5, 0, 0.5, 18), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0,
         Visible = false, Active = true, Draggable = true, ClipsDescendants = true,
     }, ScreenGui)
     corner(MainFrame, 6)
@@ -1679,19 +1679,37 @@ local function LoadHub()
     local uiScale = make("UIScale", {Scale = baseScale}, MainFrame)
 
     local Backdrop = make("ImageLabel", {
-        Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Image = BACKGROUND_IMAGE,
-        ScaleType = Enum.ScaleType.Crop, ImageTransparency = BACKGROUND_TRANSPARENCY, ImageColor3 = Color3.fromRGB(255, 255, 255), ZIndex = 0,
+        Name = "Backdrop",
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 1,
+        Image = "rbxthumb://type=Asset&id=109756001841654&w=420&h=420",
+        ScaleType = Enum.ScaleType.Crop,
+        ImageTransparency = 0,
+        ImageColor3 = Color3.fromRGB(255, 255, 255),
+        ZIndex = 0,
     }, MainFrame)
     corner(Backdrop, 6)
-    -- capa oscura para que se lea el texto encima de la foto
+    -- si el asset tarda, reintenta
+    task.spawn(function()
+        for _ = 1, 5 do
+            if Backdrop.IsLoaded then break end
+            Backdrop.Image = "rbxthumb://type=Asset&id=109756001841654&w=420&h=420"
+            task.wait(0.5)
+        end
+    end)
+    -- capa oscura suave (para leer texto)
     local BackdropDim = make("Frame", {
-        Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.fromRGB(8, 12, 28),
-        BackgroundTransparency = 0.45, BorderSizePixel = 0, ZIndex = 1,
+        Name = "BackdropDim",
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundColor3 = Color3.fromRGB(5, 8, 18),
+        BackgroundTransparency = 0.6,
+        BorderSizePixel = 0,
+        ZIndex = 1,
     }, MainFrame)
     corner(BackdropDim, 6)
 
     local Header = make("Frame", {
-        Size = UDim2.new(1, 0, 0, 58), BackgroundColor3 = Theme.Bg, BackgroundTransparency = 0.35,
+        Size = UDim2.new(1, 0, 0, 58), BackgroundColor3 = Theme.Bg, BackgroundTransparency = 0.55,
         BorderSizePixel = 0, ZIndex = 3,
     }, MainFrame)
     make("ImageLabel", {
@@ -1748,7 +1766,7 @@ local function LoadHub()
     local SEARCH_H = 38
     make("Frame", {
         Size = UDim2.new(0, SIDE_W, 1, -(TOP_H + FOOT_H)), Position = UDim2.new(0, 0, 0, TOP_H),
-        BackgroundColor3 = Theme.Bg, BackgroundTransparency = 0.4, BorderSizePixel = 0, ZIndex = 1,
+        BackgroundColor3 = Theme.Bg, BackgroundTransparency = 0.7, BorderSizePixel = 0, ZIndex = 1,
     }, MainFrame)
     local Side = make("ScrollingFrame", {
         Position = UDim2.new(0, 0, 0, TOP_H + SEARCH_H), Size = UDim2.new(0, SIDE_W, 1, -(TOP_H + SEARCH_H + FOOT_H)),
