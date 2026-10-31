@@ -1,4 +1,4 @@
--- liz | hub
+-- LIZ67 | hub
 -- Owner: chris
 -- CrÃ©ditos al owner chris
 
@@ -1689,12 +1689,12 @@ local function LoadHub()
     }, Header)
     make("TextLabel", {
         Size = UDim2.new(1, -120, 0, 28), Position = UDim2.new(0, 60, 0, 6), BackgroundTransparency = 1,
-        Text = "SHERIFF VS ASESINOS [DUELS]", Font = FONT_TITLE, TextSize = 23, TextTruncate = Enum.TextTruncate.AtEnd, TextColor3 = Theme.Text,
+        Text = "LIZ67", Font = FONT_TITLE, TextSize = 23, TextTruncate = Enum.TextTruncate.AtEnd, TextColor3 = Theme.Text,
         TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 4,
     }, Header)
     make("TextLabel", {
         Size = UDim2.new(1, -120, 0, 14), Position = UDim2.new(0, 60, 0, 34), BackgroundTransparency = 1,
-        Text = "F R E E   B E T A   Â·   B Y   0 1 R O X H U B ,   N E X V Y R H U B",
+        Text = "L I Z 6 7   Â·   O W N E R :   C H R I S",
         Font = FONT, TextSize = 9, TextTruncate = Enum.TextTruncate.AtEnd, TextColor3 = Theme.AccentDim,
         TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 4,
     }, Header)
@@ -2541,7 +2541,7 @@ local function LoadHub()
 
     local Kills = NewPanel("HIGH KILLS")
     Section(Kills, "KILL ALL")
-    Toggle(Kills, "KILL ALL BY NEXVYR HUB", false, function(on)
+    Toggle(Kills, "KILL ALL BY LIZ67", false, function(on)
         if on then RoxKillAllInstance:Start() else RoxKillAllInstance:Stop() end
     end)
     Slider(Kills, "VIBRACIÃ“N", 0.0, 3.0, 0.8, function(v) KILLALL_JITTER_AMPLITUDE = v end)
@@ -2573,11 +2573,11 @@ local function LoadHub()
             TextXAlignment = align or Enum.TextXAlignment.Left, LayoutOrder = order,
         }, creditCard)
     end
-    creditLine(1, "liz", FONT_TITLE, 22, Theme.Text)
+    creditLine(1, "LIZ67", FONT_TITLE, 22, Theme.Text)
     line(creditCard, {Size = UDim2.new(1, 0, 0, 1), BackgroundColor3 = Theme.AccentDim, LayoutOrder = 2}, "left")
     creditLine(3, '<font color="' .. accentHex .. '"><b>Owner: chris</b></font>', FONT, 14, Theme.Text)
     creditLine(4, "CrÃ©ditos al owner chris", FONT, 13, Theme.Dim)
-    creditLine(5, "Script liz", FONT_TITLE, 16, Theme.Dim, Enum.TextXAlignment.Center)
+    creditLine(5, "Script LIZ67", FONT_TITLE, 16, Theme.Dim, Enum.TextXAlignment.Center)
 
     local function tintIcon(parts, color, animate)
         local info = TweenInfo.new(animate and 0.15 or 0)
