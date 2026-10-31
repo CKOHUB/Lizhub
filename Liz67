@@ -12,8 +12,7 @@ local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 local player = Player
 local getgenv = getgenv or function() return _G end
-
--- FONDO DEL MENU (sube tu foto a Roblox y pon el ID aqui)
+local BACKGROUND_IMAGE = "rbxassetid://73001572792344"
 -- Ejemplo: "rbxassetid://1234567890"
 local BACKGROUND_IMAGE = "rbxassetid://73001572792344"
 local BACKGROUND_TRANSPARENCY = 0
