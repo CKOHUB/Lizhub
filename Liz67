@@ -1682,7 +1682,7 @@ local function LoadHub()
         Name = "Backdrop",
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 1,
-        Image = BACKGROUND_IMAGE,
+        Image = "rbxassetid://73001572792344",
         ScaleType = Enum.ScaleType.Crop,
         ImageTransparency = 0,
         ImageColor3 = Color3.fromRGB(255, 255, 255),
@@ -1693,7 +1693,7 @@ local function LoadHub()
     task.spawn(function()
         for _ = 1, 5 do
             if Backdrop.IsLoaded then break end
-            Backdrop.Image = BACKGROUND_IMAGE
+            Backdrop.Image = "rbxassetid://73001572792344"
             task.wait(0.5)
         end
     end)
