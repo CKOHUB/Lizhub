@@ -1,61 +1,14 @@
--- CKOHUB (Kill All corregido)
+-- CKOHUB Kill All Corregido (No te mata)
 -- Compatible Delta
--- Discord: https://discord.gg/EXgfQ5Nux
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService")
-local MarketplaceService = game:GetService("MarketplaceService")
-local HttpService = game:GetService("HttpService")
 local workspace = game:GetService("Workspace")
-local TeleportService = game:GetService("TeleportService")
-local SoundService = game:GetService("SoundService")
 
 local player = Players.LocalPlayer
 while not player do task.wait() player = Players.LocalPlayer end
 
-local camera = workspace.CurrentCamera
-local mouse = player:GetMouse()
-
-local fovVisiblePreference = false
-local fovRadius = 120
-local autoShootEnabled = false
-local autoShootAgresivoEnabled = false
-local autoShootTargetPart = "Cabeza"
-local silentAimManualEnabled = false
-local silentAimFovEnabled = false
-local silentAimTargetPart = "Cabeza"
-local teamCheckEnabled = true
-local espEnabled = false
-local espColor = Color3.fromRGB(255, 255, 255)
-local espSettings = { Glow = true }
-local KillAllEnabled = false
-local hitboxEnabled = false
-local hitboxInvisible = false
-local hitboxSize = 3.5
-local hitboxColor = Color3.fromRGB(255, 0, 0)
-
-local animacionActualActiva = nil
-local misAnimacionesOriginales = nil
-local UIElements = {}
-local NotificationsEnabled = false
-
-local Keybinds = { ToggleUI = "RightControl", ToggleKillAll = "K" }
-
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "CKOHUB_Overlays"
-screenGui.ResetOnSpawn = false
-screenGui.IgnoreGuiInset = true
-screenGui.DisplayOrder = 999
-screenGui.Parent = player:WaitForChild("PlayerGui")
-
-local espFolder = Instance.new("Folder")
-espFolder.Name = "CKOHUB_ESPFolder"
-espFolder.Parent = screenGui
-
--- ==================== KILL ALL CORREGIDO ====================
+-- ==================== CONSTANTES CORREGIDAS ====================
 local KILLALL_MOVE_SPEED               = 39.9
 local KILLALL_APPROACH_DISTANCE        = 2.5
 local KILLALL_APPROACH_TOLERANCE       = 0.35
@@ -96,6 +49,10 @@ function ConnectionManager:Cleanup()
         elseif t == "function" then pcall(item) end
     end
 end
+
+-- Necesitás tener estas funciones del script original:
+-- esEnemigoValido()
+-- IsInMatchStrict()
 
 local KillAll = {}
 KillAll.__index = KillAll
