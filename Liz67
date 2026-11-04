@@ -182,7 +182,7 @@ local Tabs = {
     Animaciones = MainSection:Tab({ Title = "Animaciones", Icon = "solar:smile-circle-bold" }),
     Sonidos = TrollSection:Tab({ Title = "Sonidos", Icon = "solar:speaker-bold" }),
     Guardado = TrollSection:Tab({ Title = "Guardado", Icon = "solar:diskette-bold" }),
-    Music = TrollSection:Tab({ Title = "MÃºsica", Icon = "solar:music-note-2-bold" }),
+    Music = TrollSection:Tab({ Title = "MÃƒÂºsica", Icon = "solar:music-note-2-bold" }),
     Fondos = TrollSection:Tab({ Title = "Fondos", Icon = "solar:gallery-bold" }),
     FondosPlus = TrollSection:Tab({ Title = "Fondos +", Icon = "solar:gallery-wide-bold" }),
     Emotes = TrollSection:Tab({ Title = "Emotes", Icon = "solar:emoji-funny-circle-bold" }),
@@ -1641,7 +1641,7 @@ pcall(function() execName = identifyexecutor and identifyexecutor() or "Desconoc
 
 Tabs.Inicio:Paragraph({
     Title = "Usuario: " .. player.DisplayName,
-    Desc = "Usuario: @" .. player.Name .. "\nID: " .. player.UserId .. "\nEdad de la cuenta: " .. player.AccountAge .. " dÃ­as",
+    Desc = "Usuario: @" .. player.Name .. "\nID: " .. player.UserId .. "\nEdad de la cuenta: " .. player.AccountAge .. " dÃƒÂ­as",
     Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=420&h=420",
     ImageSize = 48
 })
@@ -1655,7 +1655,7 @@ Tabs.Inicio:Paragraph({
     ImageSize = 32
 })
 
-Tabs.Inicio:Section({ Title = "InformaciÃ³n del Servidor", Icon = "solar:server-bold" })
+Tabs.Inicio:Section({ Title = "InformaciÃƒÂ³n del Servidor", Icon = "solar:server-bold" })
 
 local gameNameStr = "Desconocido"
 pcall(function() gameNameStr = MarketplaceService:GetProductInfo(game.PlaceId).Name end)
@@ -1674,7 +1674,7 @@ Tabs.Aim:Section({ Title = "Auto Shoot", Icon = "solar:target-bold" })
 
 UIElements.TogAutoShoot = Tabs.Aim:Toggle({
     Title = "Auto Shoot (Normal - Cabeza/Torso)",
-    Desc = "Dispara automÃ¡ticamente al torso o cabeza sin fallar.",
+    Desc = "Dispara automÃƒÂ¡ticamente al torso o cabeza sin fallar.",
     Callback = function(Value)
         autoShootEnabled = Value
         if not Value and not autoShootAgresivoEnabled then getgenv().LIZ67TargetPart = nil end
@@ -1683,7 +1683,7 @@ UIElements.TogAutoShoot = Tabs.Aim:Toggle({
 
 UIElements.TogAutoShootAgr = Tabs.Aim:Toggle({
     Title = "Auto Shoot (Agresivo - Hitbox Completa)",
-    Desc = "Dispara a cualquier pÃ­xel visible del cuerpo del enemigo.",
+    Desc = "Dispara a cualquier pÃƒÂ­xel visible del cuerpo del enemigo.",
     Callback = function(Value)
         autoShootAgresivoEnabled = Value
         if not Value and not autoShootEnabled then getgenv().LIZ67TargetPart = nil end
@@ -1701,7 +1701,7 @@ local equipGunEnabled = false
 
 UIElements.TogEquipGun = Tabs.Aim:Toggle({
     Title = "Equipar pistola",
-    Desc = "Equipa rÃ¡pidamente la pistola.",
+    Desc = "Equipa rÃƒÂ¡pidamente la pistola.",
     Value = false,
     Callback = function(Value)
         equipGunEnabled = Value
@@ -1798,7 +1798,7 @@ UIElements.DropSilentAimPart = Tabs.Aim:Dropdown({
 
 UIElements.TogSilentAimFOV = Tabs.Aim:Toggle({
     Title = "Silent Aim (Con FOV)",
-    Desc = "Igual que el Silent Aim, pero solo afecta a los enemigos dentro del cÃ­rculo.",
+    Desc = "Igual que el Silent Aim, pero solo afecta a los enemigos dentro del cÃƒÂ­rculo.",
     Callback = function(Value)
         silentAimFovEnabled = Value
         if not Value and not silentAimManualEnabled and not autoShootEnabled and not autoShootAgresivoEnabled then getgenv().LIZ67TargetPart = nil end
@@ -1806,13 +1806,13 @@ UIElements.TogSilentAimFOV = Tabs.Aim:Toggle({
 })
 
 UIElements.TogShowFOV = Tabs.Aim:Toggle({
-    Title = "Mostrar CÃ­rculo FOV",
-    Desc = "Dibuja un cÃ­rculo en pantalla.",
+    Title = "Mostrar CÃƒÂ­rculo FOV",
+    Desc = "Dibuja un cÃƒÂ­rculo en pantalla.",
     Callback = function(Value) fovVisiblePreference = Value end
 })
 
 UIElements.SliFOVSize = Tabs.Aim:Slider({
-    Title = "TamaÃ±o del FOV",
+    Title = "TamaÃƒÂ±o del FOV",
     Step = 1,
     Value = { Min = 10, Max = 800, Default = 120 },
     Callback = function(v) fovRadius = v end
@@ -1934,25 +1934,18 @@ task.spawn(function()
                 end
             end
             if closestTargetPart then
+                -- Silent Aim del script: el hook usa LIZ67TargetPart
                 getgenv().LIZ67TargetPart = closestTargetPart
+                -- Auto Shoot: solo Activate (funciona con el silent)
                 pcall(function()
                     arma:Activate()
-                    task.delay(0.03, function()
-                        if arma and arma.Parent == char then pcall(function() arma:Deactivate() end) end
-                    end)
-                    pcall(function()
-                        local vu = game:GetService("VirtualUser")
-                        vu:CaptureController()
-                        vu:ClickButton1(Vector2.new())
-                    end)
-                    pcall(function()
-                        if mouse1click then mouse1click() end
-                    end)
-                    pcall(function()
-                        if mouse1press then mouse1press() task.delay(0.02, function() pcall(mouse1release) end) end
+                    task.delay(0.05, function()
+                        if arma and arma.Parent == char then
+                            pcall(function() arma:Deactivate() end)
+                        end
                     end)
                 end)
-                task.wait(autoShootAgresivoEnabled and 0.08 or 0.12)
+                task.wait(autoShootAgresivoEnabled and 0.11 or 0.15)
             else
                 getgenv().LIZ67TargetPart = nil
             end
@@ -2053,15 +2046,15 @@ Tabs.KillAll:Keybind({
 })
 
 Tabs.KillAll:Slider({
-    Title = "VibraciÃ³n",
-    Desc = "VibraciÃ³n corta mientras se acerca",
+    Title = "VibraciÃƒÂ³n",
+    Desc = "VibraciÃƒÂ³n corta mientras se acerca",
     Step = 0.05,
     Value = { Min = 0.0, Max = 3.0, Default = 0.8 },
     Callback = function(v) KILLALL_JITTER_AMPLITUDE = v end
 })
 
 Tabs.KillAll:Slider({
-    Title = "Radio de ActivaciÃ³n",
+    Title = "Radio de ActivaciÃƒÂ³n",
     Desc = "Distancia en la que se activa",
     Step = 0.5,
     Value = { Min = 2.75, Max = 9.0, Default = 6.0 },
@@ -2075,7 +2068,7 @@ Tabs.KillAll:Section({ Title = "Hitbox Expander", Icon = "solar:box-bold" })
 
 Tabs.KillAll:Toggle({
     Title = "Activar Hitbox",
-    Desc = "AÃ±ade una hitbox cÃºbica a los enemigos.",
+    Desc = "AÃƒÂ±ade una hitbox cÃƒÂºbica a los enemigos.",
     Value = false,
     Callback = function(Value)
         hitboxEnabled = Value
@@ -2091,7 +2084,7 @@ Tabs.KillAll:Toggle({
 })
 
 Tabs.KillAll:Slider({
-    Title = "TamaÃ±o de la Hitbox",
+    Title = "TamaÃƒÂ±o de la Hitbox",
     Step = 0.5,
     Value = { Min = 1.0, Max = 18.0, Default = 3.5 },
     Callback = function(v) hitboxSize = v end
@@ -2124,7 +2117,7 @@ local autoTPMainToggle, autoTPAltToggle
 
 autoTPMainToggle = Tabs.RachaFarm:Toggle({
     Title = "Auto Teleport (Main)",
-    Desc = "Te teletransporta a la plataforma Main. Se desactiva si activÃ¡s Alt.",
+    Desc = "Te teletransporta a la plataforma Main. Se desactiva si activÃƒÂ¡s Alt.",
     Value = false,
     Callback = function(value)
         if value then
@@ -2143,7 +2136,7 @@ autoTPMainToggle = Tabs.RachaFarm:Toggle({
 
 autoTPAltToggle = Tabs.RachaFarm:Toggle({
     Title = "Auto Teleport (Alt)",
-    Desc = "Te teletransporta a la plataforma Alt. Se desactiva si activÃ¡s Main.",
+    Desc = "Te teletransporta a la plataforma Alt. Se desactiva si activÃƒÂ¡s Main.",
     Value = false,
     Callback = function(value)
         if value then
@@ -2182,7 +2175,7 @@ Tabs.RachaFarm:Dropdown({
     end
 })
 
-Tabs.Vis:Section({ Title = "ConfiguraciÃ³n de ESP", Icon = "solar:eye-bold" })
+Tabs.Vis:Section({ Title = "ConfiguraciÃƒÂ³n de ESP", Icon = "solar:eye-bold" })
 
 UIElements.TogEsp = Tabs.Vis:Toggle({
     Title = "ESP Jugadores",
@@ -2619,7 +2612,7 @@ local KillSounds = {
     { Name = "OwO",             Id = "71942674274967" },
     { Name = "SEMPAI >.<",      Id = "115498703521334" },
     { Name = "Ahhh:3",          Id = "83559496188823" },
-    { Name = "Ã±yaa >//~//<",    Id = "78798011197804" },
+    { Name = "ÃƒÂ±yaa >//~//<",    Id = "78798011197804" },
 }
 
 local KillSoundPlayer = Instance.new("Sound")
@@ -2631,7 +2624,7 @@ KillSoundPlayer.Parent = SoundService
 local ShootReloadOptions = {
     ["Revolver + Recarga"]     = { Shoot = "680140087",       Reload = "138084889" },
     ["Magia de Anime"]         = { Shoot = "109296938403067", Reload = nil },
-    ["LÃ¡ser + Recarga lÃ¡ser"]  = { Shoot = "4400449399",      Reload = "129456040607483" },
+    ["LÃƒÂ¡ser + Recarga lÃƒÂ¡ser"]  = { Shoot = "4400449399",      Reload = "129456040607483" },
 }
 local SelectedShootReload = "Revolver + Recarga"
 
@@ -2935,7 +2928,7 @@ Tabs.Sonidos:Toggle({
 
 Tabs.Sonidos:Dropdown({
     Title = "Sonido de disparo",
-    Values = { "Revolver + Recarga", "Magia de Anime", "LÃ¡ser + Recarga lÃ¡ser" },
+    Values = { "Revolver + Recarga", "Magia de Anime", "LÃƒÂ¡ser + Recarga lÃƒÂ¡ser" },
     Value = "Revolver + Recarga",
     Callback = function(selected) SelectedShootReload = selected end
 })
@@ -2959,19 +2952,19 @@ MusicPlayer.Volume = 0.5
 MusicPlayer.Parent = SoundService
 
 local SongList = {
-    { Name = "CanciÃ³n 1", Id = "84944985070181" },
-    { Name = "CanciÃ³n 2", Id = "87570666848900" },
-    { Name = "CanciÃ³n 3", Id = "82746224492420" },
-    { Name = "CanciÃ³n 4", Id = "71393805905055" },
-    { Name = "CanciÃ³n 5", Id = "75688616622595" },
-    { Name = "CanciÃ³n 6", Id = "135609653444873" },
-    { Name = "CanciÃ³n 7", Id = "93699644879957" },
-    { Name = "CanciÃ³n 8", Id = "110398343528156" },
-    { Name = "CanciÃ³n 9", Id = "138863509657081" },
-    { Name = "CanciÃ³n 10", Id = "115440201770223" },
-    { Name = "CanciÃ³n 11", Id = "128048502331483" },
-    { Name = "CanciÃ³n 12", Id = "135321902579514" },
-    { Name = "CanciÃ³n 13", Id = "131465489873214" },
+    { Name = "CanciÃƒÂ³n 1", Id = "84944985070181" },
+    { Name = "CanciÃƒÂ³n 2", Id = "87570666848900" },
+    { Name = "CanciÃƒÂ³n 3", Id = "82746224492420" },
+    { Name = "CanciÃƒÂ³n 4", Id = "71393805905055" },
+    { Name = "CanciÃƒÂ³n 5", Id = "75688616622595" },
+    { Name = "CanciÃƒÂ³n 6", Id = "135609653444873" },
+    { Name = "CanciÃƒÂ³n 7", Id = "93699644879957" },
+    { Name = "CanciÃƒÂ³n 8", Id = "110398343528156" },
+    { Name = "CanciÃƒÂ³n 9", Id = "138863509657081" },
+    { Name = "CanciÃƒÂ³n 10", Id = "115440201770223" },
+    { Name = "CanciÃƒÂ³n 11", Id = "128048502331483" },
+    { Name = "CanciÃƒÂ³n 12", Id = "135321902579514" },
+    { Name = "CanciÃƒÂ³n 13", Id = "131465489873214" },
 }
 
 local CurrentIndex = 1
@@ -2983,7 +2976,7 @@ local function OptionLabel(song) return song.Name .. " (" .. song.Id .. ")" end
 local function UpdateNowPlaying()
     local song = SongList[CurrentIndex]
     if song and NowPlayingParagraph then
-        NowPlayingParagraph:SetDesc(("%s â€¢ ID: %s â€¢ %s"):format(song.Name, song.Id, MusicPlayer.Playing and "Reproduciendo" or "Pausado"))
+        NowPlayingParagraph:SetDesc(("%s Ã¢â‚¬Â¢ ID: %s Ã¢â‚¬Â¢ %s"):format(song.Name, song.Id, MusicPlayer.Playing and "Reproduciendo" or "Pausado"))
     end
 end
 
@@ -3036,20 +3029,20 @@ end
 MusicPlayer.Ended:Connect(function() NextSong() end)
 
 Tabs.Music:Section({ Title = "Ahora suena", Icon = "solar:music-note-bold" })
-NowPlayingParagraph = Tabs.Music:Paragraph({ Title = "Sin canciÃ³n seleccionada", Desc = "Presiona Reproducir para comenzar", Icon = "solar:music-note-2-bold" })
+NowPlayingParagraph = Tabs.Music:Paragraph({ Title = "Sin canciÃƒÂ³n seleccionada", Desc = "Presiona Reproducir para comenzar", Icon = "solar:music-note-2-bold" })
 
 Tabs.Music:Section({ Title = "Controles", Icon = "solar:tuning-2-bold" })
-Tabs.Music:Button({ Title = "Anterior", Desc = "Retrocede a la canciÃ³n previa", Icon = "solar:skip-previous-bold", Variant = "Secondary", Callback = function() PrevSong() end })
-Tabs.Music:Button({ Title = "Siguiente", Desc = "Avanza a la siguiente canciÃ³n", Icon = "solar:skip-next-bold", Variant = "Secondary", Callback = function() NextSong() end })
-Tabs.Music:Button({ Title = "Reproducir", Desc = "Inicia o reanuda la canciÃ³n actual", Icon = "solar:play-circle-bold", Variant = "Primary", Callback = function() PlaySong() end })
-Tabs.Music:Button({ Title = "Pausar", Desc = "Pausa la reproducciÃ³n sin perder el avance", Icon = "solar:pause-circle-bold", Variant = "Secondary", Callback = function() PauseSong() end })
-Tabs.Music:Button({ Title = "Detener", Desc = "Corta la mÃºsica por completo", Icon = "solar:close-circle-bold", Variant = "Danger", Callback = function() StopSong() end })
+Tabs.Music:Button({ Title = "Anterior", Desc = "Retrocede a la canciÃƒÂ³n previa", Icon = "solar:skip-previous-bold", Variant = "Secondary", Callback = function() PrevSong() end })
+Tabs.Music:Button({ Title = "Siguiente", Desc = "Avanza a la siguiente canciÃƒÂ³n", Icon = "solar:skip-next-bold", Variant = "Secondary", Callback = function() NextSong() end })
+Tabs.Music:Button({ Title = "Reproducir", Desc = "Inicia o reanuda la canciÃƒÂ³n actual", Icon = "solar:play-circle-bold", Variant = "Primary", Callback = function() PlaySong() end })
+Tabs.Music:Button({ Title = "Pausar", Desc = "Pausa la reproducciÃƒÂ³n sin perder el avance", Icon = "solar:pause-circle-bold", Variant = "Secondary", Callback = function() PauseSong() end })
+Tabs.Music:Button({ Title = "Detener", Desc = "Corta la mÃƒÂºsica por completo", Icon = "solar:close-circle-bold", Variant = "Danger", Callback = function() StopSong() end })
 
-Tabs.Music:Section({ Title = "Seleccionar mÃºsica", Icon = "solar:playlist-bold" })
+Tabs.Music:Section({ Title = "Seleccionar mÃƒÂºsica", Icon = "solar:playlist-bold" })
 local SongDropdown
 SongDropdown = Tabs.Music:Dropdown({
-    Title = "CanciÃ³n",
-    Desc = "Elige una canciÃ³n de la lista para reproducirla",
+    Title = "CanciÃƒÂ³n",
+    Desc = "Elige una canciÃƒÂ³n de la lista para reproducirla",
     Icon = "solar:music-note-bold",
     Values = (function()
         local options = {}
@@ -3063,14 +3056,14 @@ SongDropdown = Tabs.Music:Dropdown({
     end,
 })
 
-Tabs.Music:Section({ Title = "Preferencias de reproducciÃ³n", Icon = "solar:settings-bold" })
-Tabs.Music:Toggle({ Title = "ReproducciÃ³n aleatoria", Desc = "Elige una canciÃ³n al azar cada vez que avanza", Value = false, Callback = function(state) ShuffleOn = state end })
-Tabs.Music:Toggle({ Title = "Repetir canciÃ³n", Desc = "Vuelve a reproducir la misma canciÃ³n al terminar", Value = false, Callback = function(state) MusicPlayer.Looped = state end })
-Tabs.Music:Slider({ Title = "Volumen", Desc = "Ajusta quÃ© tan fuerte suena la mÃºsica", Icon = "solar:volume-loud-bold", Value = { Min = 0, Max = 100, Default = 50 }, Callback = function(value) MusicPlayer.Volume = value / 100 end })
+Tabs.Music:Section({ Title = "Preferencias de reproducciÃƒÂ³n", Icon = "solar:settings-bold" })
+Tabs.Music:Toggle({ Title = "ReproducciÃƒÂ³n aleatoria", Desc = "Elige una canciÃƒÂ³n al azar cada vez que avanza", Value = false, Callback = function(state) ShuffleOn = state end })
+Tabs.Music:Toggle({ Title = "Repetir canciÃƒÂ³n", Desc = "Vuelve a reproducir la misma canciÃƒÂ³n al terminar", Value = false, Callback = function(state) MusicPlayer.Looped = state end })
+Tabs.Music:Slider({ Title = "Volumen", Desc = "Ajusta quÃƒÂ© tan fuerte suena la mÃƒÂºsica", Icon = "solar:volume-loud-bold", Value = { Min = 0, Max = 100, Default = 50 }, Callback = function(value) MusicPlayer.Volume = value / 100 end })
 
-Tabs.Music:Section({ Title = "IDs de mÃºsica", Icon = "solar:playlist-bold" })
+Tabs.Music:Section({ Title = "IDs de mÃƒÂºsica", Icon = "solar:playlist-bold" })
 local NewName, NewId = "", ""
-Tabs.Music:Input({ Title = "Nombre de la canciÃ³n", Icon = "solar:text-field-bold", Placeholder = "Ej: Mi canciÃ³n", Callback = function(value) NewName = value end })
+Tabs.Music:Input({ Title = "Nombre de la canciÃƒÂ³n", Icon = "solar:text-field-bold", Placeholder = "Ej: Mi canciÃƒÂ³n", Callback = function(value) NewName = value end })
 Tabs.Music:Input({ Title = "ID de Roblox (rbxassetid)", Icon = "solar:hashtag-bold", Placeholder = "Ej: 1234567890", Callback = function(value) NewId = value end })
 
 local function RefreshDropdownOptions()
@@ -3080,7 +3073,7 @@ local function RefreshDropdownOptions()
 end
 
 Tabs.Music:Button({
-    Title = "AÃ±adir canciÃ³n",
+    Title = "AÃƒÂ±adir canciÃƒÂ³n",
     Desc = "Guarda el nombre e ID escritos arriba en la lista",
     Icon = "solar:add-circle-bold",
     Variant = "Primary",
@@ -3102,14 +3095,14 @@ local Backgrounds = {
     { Name = "Fondo 5", ID = "14653905878", Reference = "rbxthumb://type=Asset&id=14653905878&w=420&h=420" },
     { Name = "Fondo 6", ID = "14397445471", Reference = "rbxthumb://type=Asset&id=14397445471&w=420&h=420" },
 
-    -- Fondos extra: IDs publicados en catÃ¡logos pÃºblicos de decals de Roblox.
+    -- Fondos extra: IDs publicados en catÃƒÂ¡logos pÃƒÂºblicos de decals de Roblox.
     { Name = "SIGMA Grindset", ID = "11600511955", Reference = "rbxthumb://type=Asset&id=11600511955&w=420&h=420" },
     { Name = "Giga Chad", ID = "10590477450", Reference = "rbxthumb://type=Asset&id=10590477450&w=420&h=420" },
-    { Name = "Doge clÃ¡sico", ID = "631727250", Reference = "rbxthumb://type=Asset&id=631727250&w=420&h=420" },
+    { Name = "Doge clÃƒÂ¡sico", ID = "631727250", Reference = "rbxthumb://type=Asset&id=631727250&w=420&h=420" },
     { Name = "Pop Cat", ID = "10800748312", Reference = "rbxthumb://type=Asset&id=10800748312&w=420&h=420" },
     { Name = "Perro meme", ID = "9835676498", Reference = "rbxthumb://type=Asset&id=9835676498&w=420&h=420" },
     { Name = "Gato con arma", ID = "5205790826", Reference = "rbxthumb://type=Asset&id=5205790826&w=420&h=420" },
-    { Name = "Gato meme clÃ¡sico", ID = "78969295", Reference = "rbxthumb://type=Asset&id=78969295&w=420&h=420" },
+    { Name = "Gato meme clÃƒÂ¡sico", ID = "78969295", Reference = "rbxthumb://type=Asset&id=78969295&w=420&h=420" },
     { Name = "Rickroll", ID = "6403436082", Reference = "rbxthumb://type=Asset&id=6403436082&w=420&h=420" },
     { Name = "The Rock meme", ID = "8425069728", Reference = "rbxthumb://type=Asset&id=8425069728&w=420&h=420" },
     { Name = "Epic Face Roblox", ID = "109251560", Reference = "rbxthumb://type=Asset&id=109251560&w=420&h=420" },
@@ -3121,7 +3114,7 @@ local Backgrounds = {
     { Name = "Anime chica", ID = "6675147490", Reference = "rbxthumb://type=Asset&id=6675147490&w=420&h=420" },
     { Name = "Anime oscuro", ID = "10341849885", Reference = "rbxthumb://type=Asset&id=10341849885&w=420&h=420" },
     { Name = "Luffy One Piece", ID = "10511856020", Reference = "rbxthumb://type=Asset&id=10511856020&w=420&h=420" },
-    { Name = "TripulaciÃ³n One Piece", ID = "9478562327", Reference = "rbxthumb://type=Asset&id=9478562327&w=420&h=420" },
+    { Name = "TripulaciÃƒÂ³n One Piece", ID = "9478562327", Reference = "rbxthumb://type=Asset&id=9478562327&w=420&h=420" },
     { Name = "Gojo JJK", ID = "9242918232", Reference = "rbxthumb://type=Asset&id=9242918232&w=420&h=420" },
     { Name = "Makima Chainsaw Man", ID = "11902680347", Reference = "rbxthumb://type=Asset&id=11902680347&w=420&h=420" },
     { Name = "Goku Ultra Instinto", ID = "7625033282", Reference = "rbxthumb://type=Asset&id=7625033282&w=420&h=420" },
@@ -3228,7 +3221,7 @@ Tabs.Fondos:Button({
     Title = "Aplicar fondo LIZ67",
     Callback = function()
         if not ApplySelectedBackground() then
-            warn("No se encontrÃ³ el fondo de WindUI.")
+            warn("No se encontrÃƒÂ³ el fondo de WindUI.")
         end
     end
 })
@@ -3245,7 +3238,7 @@ Tabs.FondosPlus:Paragraph({
 
 FondoPlusDropdown = Tabs.FondosPlus:Dropdown({
     Title = "Elegir fondo",
-    Desc = "Sigma, Giga Chad, memes, anime, kawaii, gaming y mÃ¡s.",
+    Desc = "Sigma, Giga Chad, memes, anime, kawaii, gaming y mÃƒÂ¡s.",
     Values = FondoNames,
     Value = FondoPlusSeleccionado.Name,
     Callback = function(Value)
@@ -3267,7 +3260,7 @@ Tabs.FondosPlus:Button({
     Callback = function()
         SelectedFondo = FondoPlusSeleccionado
         if not ApplySelectedBackground() then
-            warn("LIZ67: no se encontrÃ³ la capa de fondo de WindUI.")
+            warn("LIZ67: no se encontrÃƒÂ³ la capa de fondo de WindUI.")
         end
     end
 })
@@ -3419,7 +3412,7 @@ local NewEmoteName, NewEmoteId = "", ""
 local NewEmoteLoop = true
 Tabs.Emotes:Input({ Title = "Nombre del emote", Icon = "solar:text-field-bold", Placeholder = "Ej: Mi emote", Callback = function(value) NewEmoteName = value end })
 Tabs.Emotes:Input({ Title = "ID de Roblox (rbxassetid)", Icon = "solar:hashtag-bold", Placeholder = "Ej: 1234567890", Callback = function(value) NewEmoteId = value end })
-Tabs.Emotes:Toggle({ Title = "Repetir en bucle", Desc = "ActÃ­valo solo si el emote es un baile hecho para loopearse", Value = true, Callback = function(state) NewEmoteLoop = state end })
+Tabs.Emotes:Toggle({ Title = "Repetir en bucle", Desc = "ActÃƒÂ­valo solo si el emote es un baile hecho para loopearse", Value = true, Callback = function(state) NewEmoteLoop = state end })
 
 local function RefreshEmoteDropdown()
     local options = {}
@@ -3428,7 +3421,7 @@ local function RefreshEmoteDropdown()
 end
 
 Tabs.Emotes:Button({
-    Title = "AÃ±adir emote",
+    Title = "AÃƒÂ±adir emote",
     Desc = "Guarda el nombre, ID y loop en la lista",
     Icon = "solar:add-circle-bold",
     Variant = "Primary",
@@ -3650,18 +3643,18 @@ Tabs.Items:Toggle({
 Tabs.Com:Section({ Title = "Comunidad", Icon = "solar:chat-line-bold" })
 
 Tabs.Com:Paragraph({
-    Title = "Ãšnete a los grupos para no perderte las novedades de LIZ67.",
+    Title = "ÃƒÅ¡nete a los grupos para no perderte las novedades de LIZ67.",
     Desc = "",
 })
 
 Tabs.Com:Paragraph({
-    Title = "Ãšnete al servidor de Discord",
-    Desc = "Haz clic en el botÃ³n de abajo para copiar el link de invitaciÃ³n de Discord.",
+    Title = "ÃƒÅ¡nete al servidor de Discord",
+    Desc = "Haz clic en el botÃƒÂ³n de abajo para copiar el link de invitaciÃƒÂ³n de Discord.",
     Thumbnail = "rbxthumb://type=Asset&id=134340713001451&w=420&h=420",
     ThumbnailSize = 128,
     Buttons = {
         {
-            Title = "Copiar invitaciÃ³n de Discord",
+            Title = "Copiar invitaciÃƒÂ³n de Discord",
             Callback = function()
                 pcall(function()
                     if setclipboard then
@@ -3680,8 +3673,8 @@ Tabs.Com:Paragraph({
 })
 
 Tabs.Avisos:Section({ Title = "Aviso", Icon = "solar:shield-warning-bold" })
-Tabs.Avisos:Paragraph({ Title = "El kill all sigue en fase beta, no es recomendable en sv pÃºblico.", Desc = "" })
-Tabs.Avisos:Paragraph({ Title = "Los creadores no se hacen responsables si resultas baneado del juego, Ãºsalo bajo tu propia responsabilidad.", Desc = "" })
+Tabs.Avisos:Paragraph({ Title = "El kill all sigue en fase beta, no es recomendable en sv pÃƒÂºblico.", Desc = "" })
+Tabs.Avisos:Paragraph({ Title = "Los creadores no se hacen responsables si resultas baneado del juego, ÃƒÂºsalo bajo tu propia responsabilidad.", Desc = "" })
 
 Tabs.Avisos:Section({ Title = "Teclas", Icon = "solar:keyboard-bold" })
 
@@ -3732,7 +3725,7 @@ local selectedConfig = "Ninguna"
 local customConfigName = ""
 
 local configDropdown = Tabs.Guardado:Dropdown({
-    Title = "Seleccionar ConfiguraciÃ³n",
+    Title = "Seleccionar ConfiguraciÃƒÂ³n",
     Values = availableConfigs,
     Value = "Ninguna",
     Callback = function(Value) selectedConfig = Value end
@@ -3789,7 +3782,7 @@ Tabs.Guardado:Button({
         else
             deleteConfirmPending = true
             deleteConfirmTime = now
-            showBottomMessage("Â¿Seguro? Presiona de nuevo para confirmar.")
+            showBottomMessage("Ã‚Â¿Seguro? Presiona de nuevo para confirmar.")
         end
     end
 })
@@ -3800,14 +3793,14 @@ local function secureLoadToggle(element, val)
 end
 
 Tabs.Guardado:Button({
-    Title = "Guardar ConfiguraciÃ³n",
+    Title = "Guardar ConfiguraciÃƒÂ³n",
     Icon = "solar:diskette-bold",
     Variant = "Primary",
     Callback = function()
         local finalName = customConfigName:gsub("[^%w%s%-]", "")
         if finalName == "" then finalName = selectedConfig end
         if finalName == "" or finalName == "Ninguna" then
-            showBottomMessage("Escribe un nombre para guardar la configuraciÃ³n.")
+            showBottomMessage("Escribe un nombre para guardar la configuraciÃƒÂ³n.")
             return
         end
         local path = configFolder .. "/" .. finalName .. ".json"
@@ -3819,7 +3812,7 @@ Tabs.Guardado:Button({
                 ["Equipar pistola"] = equipGunEnabled,
                 ["Silent Aim (Manual)"] = silentAimManualEnabled,
                 ["Silent Aim (FOV)"] = silentAimFovEnabled,
-                ["Mostrar CÃ­rculo FOV"] = fovVisiblePreference,
+                ["Mostrar CÃƒÂ­rculo FOV"] = fovVisiblePreference,
                 ["ESP Jugadores"] = espEnabled,
                 ["ESP Glow"] = espSettings.Glow,
                 ["Kill All"] = KillAllEnabled,
@@ -3830,8 +3823,8 @@ Tabs.Guardado:Button({
                 ["Korblox"] = KorbloxEnabled
             },
             Sliders = {
-                ["TamaÃ±o del FOV"] = fovRadius,
-                ["TamaÃ±o de Hitbox"] = hitboxSize,
+                ["TamaÃƒÂ±o del FOV"] = fovRadius,
+                ["TamaÃƒÂ±o de Hitbox"] = hitboxSize,
                 ["Volumen Kill Sound"] = KillSoundVolume
             },
             Colors = {
@@ -3861,12 +3854,12 @@ Tabs.Guardado:Button({
 })
 
 Tabs.Guardado:Button({
-    Title = "Cargar ConfiguraciÃ³n",
+    Title = "Cargar ConfiguraciÃƒÂ³n",
     Icon = "solar:folder-open-bold",
     Variant = "Primary",
     Callback = function()
         if selectedConfig == "Ninguna" or selectedConfig == "" then
-            showBottomMessage("No hay ninguna configuraciÃ³n seleccionada.")
+            showBottomMessage("No hay ninguna configuraciÃƒÂ³n seleccionada.")
             return
         end
         local path = configFolder .. "/" .. selectedConfig .. ".json"
@@ -3879,7 +3872,7 @@ Tabs.Guardado:Button({
                     if decoded.Toggles["Equipar pistola"] ~= nil then equipGunEnabled = decoded.Toggles["Equipar pistola"] secureLoadToggle(UIElements.TogEquipGun, equipGunEnabled) end
                     if decoded.Toggles["Silent Aim (Manual)"] ~= nil then silentAimManualEnabled = decoded.Toggles["Silent Aim (Manual)"] secureLoadToggle(UIElements.TogSilentAimManual, silentAimManualEnabled) end
                     if decoded.Toggles["Silent Aim (FOV)"] ~= nil then silentAimFovEnabled = decoded.Toggles["Silent Aim (FOV)"] secureLoadToggle(UIElements.TogSilentAimFOV, silentAimFovEnabled) end
-                    if decoded.Toggles["Mostrar CÃ­rculo FOV"] ~= nil then fovVisiblePreference = decoded.Toggles["Mostrar CÃ­rculo FOV"] secureLoadToggle(UIElements.TogShowFOV, fovVisiblePreference) end
+                    if decoded.Toggles["Mostrar CÃƒÂ­rculo FOV"] ~= nil then fovVisiblePreference = decoded.Toggles["Mostrar CÃƒÂ­rculo FOV"] secureLoadToggle(UIElements.TogShowFOV, fovVisiblePreference) end
                     if decoded.Toggles["ESP Jugadores"] ~= nil then espEnabled = decoded.Toggles["ESP Jugadores"] secureLoadToggle(UIElements.TogEsp, espEnabled) end
                     if decoded.Toggles["ESP Glow"] ~= nil then espSettings.Glow = decoded.Toggles["ESP Glow"] secureLoadToggle(UIElements.TogEspGl, espSettings.Glow) end
                     if decoded.Toggles["Kill All"] ~= nil then
@@ -3899,8 +3892,8 @@ Tabs.Guardado:Button({
                     end
                 end
                 if decoded.Sliders then
-                    if decoded.Sliders["TamaÃ±o del FOV"] ~= nil then fovRadius = decoded.Sliders["TamaÃ±o del FOV"] secureLoadToggle(UIElements.SliFOVSize, fovRadius) end
-                    if decoded.Sliders["TamaÃ±o de Hitbox"] ~= nil then hitboxSize = decoded.Sliders["TamaÃ±o de Hitbox"] end
+                    if decoded.Sliders["TamaÃƒÂ±o del FOV"] ~= nil then fovRadius = decoded.Sliders["TamaÃƒÂ±o del FOV"] secureLoadToggle(UIElements.SliFOVSize, fovRadius) end
+                    if decoded.Sliders["TamaÃƒÂ±o de Hitbox"] ~= nil then hitboxSize = decoded.Sliders["TamaÃƒÂ±o de Hitbox"] end
                     if decoded.Sliders["Volumen Kill Sound"] ~= nil then
                         KillSoundVolume = decoded.Sliders["Volumen Kill Sound"]
                         KillSoundPlayer.Volume = KillSoundVolume
@@ -3937,12 +3930,12 @@ Tabs.Guardado:Button({
                         pcall(function() WindUI:SetTheme(SelectedTheme) end)
                     end
                 end
-                showBottomMessage("'" .. selectedConfig .. "' cargada con Ã©xito.")
+                showBottomMessage("'" .. selectedConfig .. "' cargada con ÃƒÂ©xito.")
             else
                 showBottomMessage("Error al leer el archivo.")
             end
         else
-            showBottomMessage("La configuraciÃ³n no existe.")
+            showBottomMessage("La configuraciÃƒÂ³n no existe.")
         end
     end
 })
@@ -3953,8 +3946,8 @@ task.spawn(function()
 end)
 
 local fechaUpdate = "04/10/2026"
-local cosasAgregadas = { "DetecciÃ³n de aliados mejorada", "Sistema optimizado", "Mejor rendimiento Jeje", "Kill All(Fase Beta)", "Auto Farm evento mejorado", "Equipar pistola automÃ¡tico" }
-local cosasArregladas = { "Aimbot y Hitbox arreglados", "Autoshoot arreglado", "ESP arreglado", "Animaciones arregladas", "Sonido de kill instantÃ¡neo" }
+local cosasAgregadas = { "DetecciÃƒÂ³n de aliados mejorada", "Sistema optimizado", "Mejor rendimiento Jeje", "Kill All(Fase Beta)", "Auto Farm evento mejorado", "Equipar pistola automÃƒÂ¡tico" }
+local cosasArregladas = { "Aimbot y Hitbox arreglados", "Autoshoot arreglado", "ESP arreglado", "Animaciones arregladas", "Sonido de kill instantÃƒÂ¡neo" }
 
 local function buildUpdateText()
     local lineas = {}
@@ -3973,6 +3966,6 @@ end
 Tabs.Update:Section({ Title = "Actualizaciones", Icon = "solar:cloud-download-bold" })
 
 local updatePara = Tabs.Update:Paragraph({
-    Title = "Ãšltima actualizaciÃ³n: " .. fechaUpdate,
+    Title = "ÃƒÅ¡ltima actualizaciÃƒÂ³n: " .. fechaUpdate,
     Desc = buildUpdateText()
 })
