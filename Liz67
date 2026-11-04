@@ -153,7 +153,7 @@ local Window = WindUI:CreateWindow({
     NewElements = true,
     HideSearchBar = false,
     Background = "rbxthumb://type=Asset&id=123933475596283&w=420&h=420",
-    BackgroundImageTransparency = 0.15,
+    BackgroundImageTransparency = 0.21,
     OpenButton = {
         Title = "LIZ67",
         Icon = "rbxthumb://type=Asset&id=118232139384203&w=420&h=420",
