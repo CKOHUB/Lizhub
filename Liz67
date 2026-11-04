@@ -3217,6 +3217,12 @@ local function FindBackground()
 end
 
 local function FixBackgroundLayer(Background)
+    -- Fondo al 85% del contenedor, centrado.
+    Background.AnchorPoint = Vector2.new(0.5, 0.5)
+    Background.Position = UDim2.fromScale(0.5, 0.5)
+    Background.Size = UDim2.fromScale(0.85, 0.85)
+    Background.ScaleType = Enum.ScaleType.Fit
+    Background.BackgroundTransparency = 1
     Background.ZIndex = 0
     Background.Active = false
     local Parent = Background.Parent
